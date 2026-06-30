@@ -7,7 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $host = "localhost"; 
 $user = "root"; 
 $pass = ""; 
-$db   = "websitebus";
+$db   = "websitebus2";
 
 $koneksi = mysqli_connect($host, $user, $pass, $db);
 if (!$koneksi) { 
