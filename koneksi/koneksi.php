@@ -13,8 +13,7 @@ $db   = "db_tiket_bus";     // Ganti dengan Nama Database hosting Anda
 $host = "localhost"; 
 $user = "root"; 
 $pass = ""; 
-$db   = "website_berita";
->>>>>>> 4095e11b89833ed25fe552f7a4a2794bbab4c68d
+$db   = "websitebus";
 
 $koneksi = mysqli_connect($host, $user, $pass, $db);
 if (!$koneksi) { 
