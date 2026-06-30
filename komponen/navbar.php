@@ -9,6 +9,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
         <li><a href="index.php" class="<?= $current_page=='index.php'?'active':'' ?>">Beranda</a></li>
         <li><a href="profile.php" class="<?= $current_page=='profile.php'?'active':'' ?>">Profile Perusahaan</a></li>
         <li><a href="berita.php" class="<?= $current_page=='berita.php'?'active':'' ?>">Berita & Info</a></li>
+        
         <li>
             <?php if(isset($_SESSION['login'])) { ?>
                 <a href="dashboard.php" class="btn-dash <?= $current_page=='dashboard.php'?'active':'' ?>">⚙️ Dashboard (<?= $_SESSION['nama_lengkap'] ?>)</a>

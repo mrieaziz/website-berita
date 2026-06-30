@@ -7,6 +7,7 @@
         <li><a href="dashboard.php?menu=bus" class="<?=$menu=='bus'?'active':''?>">🚌 Anggota 3: Manage Armada Bus</a></li>
         <li><a href="dashboard.php?menu=rute" class="<?=$menu=='rute'?'active':''?>">🗺️ Anggota 4: Manage Jalur Rute</a></li>
         <li><a href="dashboard.php?menu=testimoni" class="<?=$menu=='testimoni'?'active':''?>">⭐ Anggota 5: Manage Testimoni</a></li>
+        <li><a href="manage_pesanan.php">Lihat Pesanan Masuk</a></li>
         
         <li style="margin-top: 40px; border-top: 1px solid #34495e; padding-top: 15px;">
             <a href="logout.php" class="btn-red" style="color: white; text-align: center;" onclick="return confirm('Yakin ingin keluar sistem?')">🚪 Logout</a>
