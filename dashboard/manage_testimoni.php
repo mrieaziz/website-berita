@@ -54,7 +54,6 @@ if (isset($_POST['update_testi'])) {
 <?php if ($aksi == 'tampil') { 
     // Hitung Ringkasan Statistik
     $total_res = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total, AVG(rating) as rata_rata FROM tabel_testimoni"));
-    $pending_res = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT COUNT(*) as total_pending FROM tabel_testimoni WHERE status='Pending'"));
     $rating_rata = round($total_res['rata_rata'], 1);
 ?>
     <!-- Widget Statistik Singkat -->
@@ -67,41 +66,27 @@ if (isset($_POST['update_testi'])) {
             <span style="font-size: 12px; color: #6c757d; font-weight: bold; text-transform: uppercase;">Rata-rata Rating</span>
             <h3 style="margin: 5px 0 0 0; font-size: 24px; color: #333;">⭐ <?=$rating_rata > 0 ? $rating_rata : '0'?> <small style="font-size:14px; color:#777;">/ 5</small></h3>
         </div>
-        <div style="flex: 1; background: #f8f9fa; padding: 15px; border-left: 5px solid #dc3545; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-            <span style="font-size: 12px; color: #6c757d; font-weight: bold; text-transform: uppercase;">Perlu Review (Pending)</span>
-            <h3 style="margin: 5px 0 0 0; font-size: 24px; color: #dc3545;"><?=$pending_res['total_pending']?> ulasan</h3>
-        </div>
     </div>
 
     <div style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
         <a href="dashboard.php?menu=testimoni&aksi=tambah" class="btn btn-green">+ Beri Review Baru</a>
     </div>
     
-    <table>
+<table>
         <tr>
-            <th>Tanggal</th>
-            <th>Foto</th>
             <th>Nama Penumpang</th>
             <th>Ulasan / Komentar</th>
             <th>Rating</th>
-            <th>Status</th>
             <th>Aksi</th>
         </tr>
         <?php 
         $q = mysqli_query($koneksi, "SELECT * FROM tabel_testimoni ORDER BY id_testi DESC"); 
         if(mysqli_num_rows($q) == 0) {
-            echo "<tr><td colspan='7' style='text-align:center; padding:20px; color:#aaa;'>Belum ada testimoni masuk.</td></tr>";
+            echo "<tr><td colspan='4' style='text-align:center; padding:20px; color:#aaa;'>Belum ada testimoni masuk.</td></tr>";
         }
         while($d = mysqli_fetch_array($q)){ 
-            $badge_color = ($d['status'] == 'Aktif') ? '#28a745' : '#dc3545';
-            $tanggal_tampil = isset($d['tanggal']) ? date('d-m-Y', strtotime($d['tanggal'])) : '-';
-            
-            // Cek Foto Profil/Bukti
-            $foto_path = (!empty($d['foto']) && file_exists("uploads/".$d['foto'])) ? "uploads/".$d['foto'] : "https://placeholder.co/50x50?text=No+Img";
         ?>
         <tr>
-            <td><small><?=$tanggal_tampil?></small></td>
-            <td><img src="<?=$foto_path?>" alt="Foto" style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;"></td>
             <td><strong><?=$d['nama_user']?></strong></td>
             <td><em>"<?=$d['komentar']?>"</em></td>
             <td>
@@ -111,18 +96,13 @@ if (isset($_POST['update_testi'])) {
                 <small>(<?=$d['rating']?>/5)</small>
             </td>
             <td>
-                <span style="background: <?=$badge_color?>; color: white; padding: 2px 8px; border-radius: 4px; font-size: 11px;">
-                    <?=$d['status'] ?? 'Aktif'?>
-                </span>
-            </td>
-            <td>
                 <a href="dashboard.php?menu=testimoni&aksi=edit&id=<?=$d['id_testi']?>" class="btn btn-yellow">Edit</a>
                 <a href="dashboard.php?menu=testimoni&aksi=hapus&id=<?=$d['id_testi']?>" class="btn btn-red" onclick="return confirm('Hapus testimoni dari <?=$d['nama_user']?>?')">Hapus</a>
             </td>
         </tr>
         <?php } ?>
     </table>
-
+    
 <?php } else {
     // Default values untuk form tambah (Auto mengambil session nama jika ada)
     $session_nama = isset($_SESSION['nama_lengkap']) ? $_SESSION['nama_lengkap'] : (isset($_SESSION['username']) ? $_SESSION['username'] : '');
