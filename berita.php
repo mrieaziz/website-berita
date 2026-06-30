@@ -8,7 +8,7 @@
 <body>
     <?php include 'komponen/navbar.php'; ?>
     <div class="container">
-        <h2>Berita & Pengumuman Terbaru</h2>
+        <h2>Berita Dan Pengumuman Terbaru</h2>
         <div class="card-grid">
             <?php $q = mysqli_query($koneksi, "SELECT * FROM tabel_berita ORDER BY id_berita DESC");
             while($br = mysqli_fetch_array($q)) { ?>
