@@ -24,11 +24,12 @@ if (isset($_POST['simpan_testi'])) {
         move_uploaded_file($_FILES['foto']['tmp_name'], "uploads/".$nama_foto);
     }
 
-    mysqli_query($koneksi, "INSERT INTO tabel_testimoni VALUES (NULL, '$_POST[nama_user]', '$_POST[komentar]', '$_POST[rating]', '$tgl', 'Aktif', '$nama_foto')");
+    // Ditambahkan input kosong (NULL) untuk kolom balasan_admin saat ulasan baru dibuat
+    mysqli_query($koneksi, "INSERT INTO tabel_testimoni VALUES (NULL, '$_POST[nama_user]', '$_POST[komentar]', '$_POST[rating]', '$tgl', 'Aktif', '$nama_foto', NULL)");
     echo "<script>window.location='dashboard.php?menu=testimoni';</script>";
 }
 
-// 3. Aksi Update/Edit
+// 3. Aksi Update/Edit & Balas Admin
 if (isset($_POST['update_testi'])) {
     $nama_foto = $_POST['foto_lama'];
     
@@ -44,7 +45,8 @@ if (isset($_POST['update_testi'])) {
         }
     }
 
-    mysqli_query($koneksi, "UPDATE tabel_testimoni SET nama_user='$_POST[nama_user]', komentar='$_POST[komentar]', rating='$_POST[rating]', status='$_POST[status]', foto='$nama_foto' WHERE id_testi=$id");
+    // Query UPDATE ditambahkan kolom balasan_admin='$_POST[balasan_admin]'
+    mysqli_query($koneksi, "UPDATE tabel_testimoni SET nama_user='$_POST[nama_user]', komentar='$_POST[komentar]', rating='$_POST[rating]', status='$_POST[status]', foto='$nama_foto', balasan_admin='$_POST[balasan_admin]' WHERE id_testi=$id");
     echo "<script>window.location='dashboard.php?menu=testimoni';</script>";
 }
 ?>
@@ -72,23 +74,37 @@ if (isset($_POST['update_testi'])) {
         <a href="dashboard.php?menu=testimoni&aksi=tambah" class="btn btn-green">+ Beri Review Baru</a>
     </div>
     
-<table>
+    <table>
         <tr>
             <th>Nama Penumpang</th>
             <th>Ulasan / Komentar</th>
             <th>Rating</th>
+            <th>Tanggal</th>
             <th>Aksi</th>
         </tr>
         <?php 
         $q = mysqli_query($koneksi, "SELECT * FROM tabel_testimoni ORDER BY id_testi DESC"); 
         if(mysqli_num_rows($q) == 0) {
-            echo "<tr><td colspan='4' style='text-align:center; padding:20px; color:#aaa;'>Belum ada testimoni masuk.</td></tr>";
+            echo "<tr><td colspan='5' style='text-align:center; padding:20px; color:#aaa;'>Belum ada testimoni masuk.</td></tr>";
         }
         while($d = mysqli_fetch_array($q)){ 
         ?>
         <tr>
             <td><strong><?=$d['nama_user']?></strong></td>
-            <td><em>"<?=$d['komentar']?>"</em></td>
+            <td>
+                <em>"<?=$d['komentar']?>"</em>
+                
+                <!-- COBA LIHAT DISINI: Menampilkan Balasan Admin jika sudah dibalas -->
+                <?php if(!empty($d['balasan_admin'])) { ?>
+                    <div style="margin-top: 8px; padding: 8px; background: #e9ecef; border-left: 3px solid #28a745; border-radius: 4px; font-size: 13px;">
+                        <strong>Balasan Admin:</strong> <span><?=$d['balasan_admin']?></span>
+                    </div>
+                <?php } else { ?>
+                    <div style="margin-top: 5px;">
+                        <small style="color: #dc3545; font-style: italic;">Belum dibalas</small>
+                    </div>
+                <?php } ?>
+            </td>
             <td>
                 <span style="color: #ffc107;">
                     <?=str_repeat('⭐', $d['rating'])?>
@@ -96,7 +112,11 @@ if (isset($_POST['update_testi'])) {
                 <small>(<?=$d['rating']?>/5)</small>
             </td>
             <td>
-                <a href="dashboard.php?menu=testimoni&aksi=edit&id=<?=$d['id_testi']?>" class="btn btn-yellow">Edit</a>
+                <small style="color: #666; font-weight: bold;"><?=date('d M Y', strtotime($d['tgl']))?></small>
+            </td>
+            <td>
+                <!-- Tombol Edit diubah teksnya jadi Edit / Balas agar informatif bagi admin -->
+                <a href="dashboard.php?menu=testimoni&aksi=edit&id=<?=$d['id_testi']?>" class="btn btn-yellow">Edit / Balas</a>
                 <a href="dashboard.php?menu=testimoni&aksi=hapus&id=<?=$d['id_testi']?>" class="btn btn-red" onclick="return confirm('Hapus testimoni dari <?=$d['nama_user']?>?')">Hapus</a>
             </td>
         </tr>
@@ -104,15 +124,15 @@ if (isset($_POST['update_testi'])) {
     </table>
     
 <?php } else {
-    // Default values untuk form tambah (Auto mengambil session nama jika ada)
+    // Default values untuk form tambah
     $session_nama = isset($_SESSION['nama_lengkap']) ? $_SESSION['nama_lengkap'] : (isset($_SESSION['username']) ? $_SESSION['username'] : '');
-    $d = ['nama_user'=>$session_nama, 'komentar'=>'', 'rating'=>'5', 'status'=>'Aktif', 'foto'=>''];
+    $d = ['nama_user'=>$session_nama, 'komentar'=>'', 'rating'=>'5', 'status'=>'Aktif', 'foto'=>'', 'balasan_admin'=>''];
     
     if ($aksi == 'edit') {
         $d = mysqli_fetch_array(mysqli_query($koneksi, "SELECT * FROM tabel_testimoni WHERE id_testi=$id"));
     }
 ?>
-    <!-- Ditambahkan enctype="multipart/form-data" agar form bisa memproses upload berkas/foto -->
+    <!-- Form Tambah & Edit -->
     <form action="" method="POST" enctype="multipart/form-data">
         <label>Nama Lengkap Pelanggan</label>
         <input type="text" name="nama_user" value="<?=$d['nama_user']?>" placeholder="Contoh: Andi Wijaya" required>
@@ -137,13 +157,21 @@ if (isset($_POST['update_testi'])) {
         <input type="file" name="foto" accept="image/*">
         <input type="hidden" name="foto_lama" value="<?=$d['foto']?>">
 
+        <!-- FITUR UTAMA: Form Input Balasan Admin (Hanya muncul ketika mode EDIT) -->
         <?php if ($aksi == 'edit') { ?>
+            <div style="margin-top: 15px; padding: 15px; background: #f1f3f5; border-radius: 6px; border: 1px solid #ced4da;">
+                <label style="font-weight: bold; color: #28a745; display: block; margin-bottom: 5px;">💬 Tulis Balasan Admin</label>
+                <textarea name="balasan_admin" rows="3" placeholder="Terima kasih atas ulasannya! Kami akan terus meningkatkan kualitas..." style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-family: inherit; resize: vertical;"><?=$d['balasan_admin']?></textarea>
+            </div>
+
             <label style="margin-top:10px; display:block;">Status Tampilan</label>
             <select name="status">
                 <option value="Aktif" <?=$d['status']=='Aktif'?'selected':''?>>Aktif (Tampilkan)</option>
                 <option value="Pending" <?=$d['status']=='Pending'?'selected':''?>>Pending (Sembunyikan)</option>
             </select>
         <?php } else { ?>
+            <!-- Jika tambah data baru, set balasan_admin jadi string kosong otomatis -->
+            <input type="hidden" name="balasan_admin" value="">
             <input type="hidden" name="status" value="Aktif">
         <?php } ?>
 

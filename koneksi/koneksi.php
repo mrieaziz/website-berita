@@ -1,11 +1,12 @@
 <?php
+// WAJIB ADA: Mengaktifkan session agar login admin tersimpan dan tidak stuck
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-$host = "localhost"; 
-$user = "root"; 
-$pass = ""; 
+$host = "localhost";
+$user = "root";
+$pass = "";
 $db   = "websitebus2";
 
 $koneksi = mysqli_connect($host, $user, $pass, $db);
