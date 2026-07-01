@@ -32,6 +32,8 @@ include 'koneksi/koneksi.php';
         .testimonial-name { font-weight: bold; color: #1a252f; font-size: 16px; margin-bottom: 5px; }
         .testimonial-comment { color: #555; line-height: 1.6; font-size: 14px; margin: 15px 0; }
         .testimonial-date { font-size: 12px; color: #bdc3c7; }
+        .admin-reply { margin-top: 12px; padding: 10px 12px; background: #f8f9fa; border-left: 3px solid #2ecc71; border-radius: 6px; font-size: 13px; color: #2c3e50; }
+        .admin-reply strong { display: block; margin-bottom: 4px; color: #27ae60; }
         
         .add-review-section { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px; border-radius: 12px; text-align: center; margin-bottom: 40px; }
         .add-review-section h2 { margin-bottom: 15px; }
@@ -106,7 +108,7 @@ include 'koneksi/koneksi.php';
 
         <div class="testimonials-grid">
             <?php 
-            $query = mysqli_query($koneksi, "SELECT * FROM tabel_testimoni ORDER BY id_testi DESC");
+            $query = mysqli_query($koneksi, "SELECT * FROM tabel_testimoni WHERE status='Aktif' OR status IS NULL OR status='' ORDER BY id_testi DESC");
             
             if ($query && mysqli_num_rows($query) > 0) {
                 while($testi = mysqli_fetch_array($query)) {
@@ -119,6 +121,9 @@ include 'koneksi/koneksi.php';
                     echo "</div>";
                     echo "<div class='testimonial-comment'>\"" . htmlspecialchars($testi['komentar']) . "\"</div>";
                     echo "<div class='testimonial-date'>Rating: " . $testi['rating'] . "/5 bintang</div>";
+                    if (!empty($testi['balasan_admin'])) {
+                        echo "<div class='admin-reply'><strong>Balasan Admin</strong>" . htmlspecialchars($testi['balasan_admin']) . "</div>";
+                    }
                     echo "</div>";
                 }
             } else {

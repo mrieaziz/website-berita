@@ -1,4 +1,5 @@
 <?php
+// WAJIB ADA: Mengaktifkan session agar login admin tersimpan dan tidak stuck
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
