@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-include 'koneksi/koneksi.php';
+require_once __DIR__ . '/koneksi/koneksi.php';
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -71,30 +71,34 @@ include 'koneksi/koneksi.php';
                 </thead>
                 <tbody>
                     <?php
-                    // Mengeksekusi query ke tabel yang benar: tabel_rute
-                    $query = mysqli_query($koneksi, "SELECT * FROM tabel_rute ORDER BY asal ASC");
-                    
-                    if ($query && mysqli_num_rows($query) > 0) {
-                        while ($row = mysqli_fetch_assoc($query)) {
-                            echo "<tr>";
-                            // Menggunakan operator ?? '' agar kebal dari error data kosong (NULL)
-                            echo "<td>" . htmlspecialchars($row['asal'] ?? '') . "</td>";
-                            echo "<td>" . htmlspecialchars($row['tujuan'] ?? '') . "</td>";
-                            echo "<td>" . htmlspecialchars($row['jam'] ?? '') . "</td>";
-                            echo "<td>Rp " . number_format(($row['harga'] ?? 0), 0, ',', '.') . "</td>";
-                            
-                            // Logika tombol aksi pemesanan tiket
-                            if (isset($_SESSION['pelanggan_login'])) {
-                                echo "<td><a href='order_tiket.php?id_rute=" . htmlspecialchars($row['id_rute'] ?? '') . "' class='btn-order'>Pesan Tiket</a></td>";
-                            } else {
-                                echo "<td><a href='login_user.php' class='btn-lock' title='Harus login terlebih dahulu'>🔒 Login untuk Pesan</a></td>";
+                    if ($koneksi) {
+                        // Mengeksekusi query ke tabel yang benar: tabel_rute
+                        $query = mysqli_query($koneksi, "SELECT * FROM tabel_rute ORDER BY asal ASC");
+                        
+                        if ($query && mysqli_num_rows($query) > 0) {
+                            while ($row = mysqli_fetch_assoc($query)) {
+                                echo "<tr>";
+                                // Menggunakan operator ?? '' agar kebal dari error data kosong (NULL)
+                                echo "<td>" . htmlspecialchars($row['asal'] ?? '') . "</td>";
+                                echo "<td>" . htmlspecialchars($row['tujuan'] ?? '') . "</td>";
+                                echo "<td>" . htmlspecialchars($row['jam'] ?? '') . "</td>";
+                                echo "<td>Rp " . number_format(($row['harga'] ?? 0), 0, ',', '.') . "</td>";
+                                
+                                // Logika tombol aksi pemesanan tiket
+                                if (isset($_SESSION['pelanggan_login'])) {
+                                    echo "<td><a href='order_tiket.php?id_rute=" . htmlspecialchars($row['id_rute'] ?? '') . "' class='btn-order'>Pesan Tiket</a></td>";
+                                } else {
+                                    echo "<td><a href='login_user.php' class='btn-lock' title='Harus login terlebih dahulu'>🔒 Login untuk Pesan</a></td>";
+                                }
+                                
+                                echo "</tr>";
                             }
-                            
-                            echo "</tr>";
+                        } else {
+                            // Jika database kosong, tampilkan pesan ini alih-alih error
+                            echo "<tr><td colspan='5' style='text-align:center;'>Belum ada rute aktif / Jadwal masih kosong.</td></tr>";
                         }
                     } else {
-                        // Jika database kosong, tampilkan pesan ini alih-alih error
-                        echo "<tr><td colspan='5' style='text-align:center;'>Belum ada rute aktif / Jadwal masih kosong.</td></tr>";
+                        echo "<tr><td colspan='5' style='text-align:center;'>Koneksi database belum tersedia. Silakan cek konfigurasi koneksi.</td></tr>";
                     }
                     ?>
                 </tbody>
