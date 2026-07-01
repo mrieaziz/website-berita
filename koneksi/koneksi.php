@@ -1,5 +1,9 @@
 <?php
-// WAJIB ADA: Mengaktifkan session agar login admin tersimpan dan tidak stuck
+// Tampilkan error jika ada (agar tidak blank putih lagi)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -7,13 +11,13 @@ if (session_status() === PHP_SESSION_NONE) {
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "websitebus2";
+// Ganti nama database di bawah ini sesuai kesepakatan kelompokmu
+// Apakah "websitebus2" atau "db_tiket_bus" (harus sama persis dengan di phpMyAdmin)
+$db   = "db_tiket_bus"; 
 
 $koneksi = mysqli_connect($host, $user, $pass, $db);
 
 if (!$koneksi) {
-    die("Koneksi database gagal: " . mysqli_connect_error());
+    die("Koneksi gagal: " . mysqli_connect_error());
 }
-
-mysqli_set_charset($koneksi, "utf8mb4");
 ?>
