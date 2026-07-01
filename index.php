@@ -1,9 +1,6 @@
 <?php
-// Mematikan semua pesan error/warning dari server XAMPP agar tampilan web bersih
 error_reporting(0);
-
-// Menyertakan file koneksi database
-include 'koneksi/koneksi.php';
+require_once __DIR__ . '/koneksi/koneksi.php';
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -36,12 +33,16 @@ include 'koneksi/koneksi.php';
     <header>
         <div class="logo">PO Trans Bus</div>
         <nav>
-            <a href="index.php">Beranda</a>
+            <a href="index.php">🏠 Beranda</a>
+            <a href="menu.php">📋 Jadwal Rute</a>
+            <a href="testimoni.php">⭐ Ulasan</a>
+            <a href="berita.php">📰 Berita</a>
             <?php if (isset($_SESSION['pelanggan_login'])) : ?>
-                <a href="logout_user.php" style="color: #e74c3c;">Logout (<?php echo htmlspecialchars($_SESSION['nama_pelanggan'] ?? ''); ?>)</a>
+                <a href="profile.php">👤 Profil</a>
+                <a href="logout_user.php" style="color: #e74c3c;">🚪 Logout (<?php echo htmlspecialchars($_SESSION['nama_pelanggan'] ?? ''); ?>)</a>
             <?php else : ?>
-                <a href="login_user.php">Login Penumpang</a>
-                <a href="register.php" style="background-color:#3498db; padding:5px 10px; border-radius:4px;">Daftar Akun</a>
+                <a href="login_user.php">🔓 Login</a>
+                <a href="register.php" style="background-color:#3498db; padding:5px 10px; border-radius:4px;">📝 Daftar</a>
             <?php endif; ?>
         </nav>
     </header>
@@ -70,30 +71,34 @@ include 'koneksi/koneksi.php';
                 </thead>
                 <tbody>
                     <?php
-                    // Mengeksekusi query ke tabel yang benar: tabel_rute
-                    $query = mysqli_query($koneksi, "SELECT * FROM tabel_rute ORDER BY asal ASC");
-                    
-                    if ($query && mysqli_num_rows($query) > 0) {
-                        while ($row = mysqli_fetch_assoc($query)) {
-                            echo "<tr>";
-                            // Menggunakan operator ?? '' agar kebal dari error data kosong (NULL)
-                            echo "<td>" . htmlspecialchars($row['asal'] ?? '') . "</td>";
-                            echo "<td>" . htmlspecialchars($row['tujuan'] ?? '') . "</td>";
-                            echo "<td>" . htmlspecialchars($row['jam'] ?? '') . "</td>";
-                            echo "<td>Rp " . number_format(($row['harga'] ?? 0), 0, ',', '.') . "</td>";
-                            
-                            // Logika tombol aksi pemesanan tiket
-                            if (isset($_SESSION['pelanggan_login'])) {
-                                echo "<td><a href='order_tiket.php?id_rute=" . htmlspecialchars($row['id_rute'] ?? '') . "' class='btn-order'>Pesan Tiket</a></td>";
-                            } else {
-                                echo "<td><a href='login_user.php' class='btn-lock' title='Harus login terlebih dahulu'>🔒 Login untuk Pesan</a></td>";
+                    if ($koneksi) {
+                        // Mengeksekusi query ke tabel yang benar: tabel_rute
+                        $query = mysqli_query($koneksi, "SELECT * FROM tabel_rute ORDER BY asal ASC");
+                        
+                        if ($query && mysqli_num_rows($query) > 0) {
+                            while ($row = mysqli_fetch_assoc($query)) {
+                                echo "<tr>";
+                                // Menggunakan operator ?? '' agar kebal dari error data kosong (NULL)
+                                echo "<td>" . htmlspecialchars($row['asal'] ?? '') . "</td>";
+                                echo "<td>" . htmlspecialchars($row['tujuan'] ?? '') . "</td>";
+                                echo "<td>" . htmlspecialchars($row['jam'] ?? '') . "</td>";
+                                echo "<td>Rp " . number_format(($row['harga'] ?? 0), 0, ',', '.') . "</td>";
+                                
+                                // Logika tombol aksi pemesanan tiket
+                                if (isset($_SESSION['pelanggan_login'])) {
+                                    echo "<td><a href='order_tiket.php?id_rute=" . htmlspecialchars($row['id_rute'] ?? '') . "' class='btn-order'>Pesan Tiket</a></td>";
+                                } else {
+                                    echo "<td><a href='login_user.php' class='btn-lock' title='Harus login terlebih dahulu'>🔒 Login untuk Pesan</a></td>";
+                                }
+                                
+                                echo "</tr>";
                             }
-                            
-                            echo "</tr>";
+                        } else {
+                            // Jika database kosong, tampilkan pesan ini alih-alih error
+                            echo "<tr><td colspan='5' style='text-align:center;'>Belum ada rute aktif / Jadwal masih kosong.</td></tr>";
                         }
                     } else {
-                        // Jika database kosong, tampilkan pesan ini alih-alih error
-                        echo "<tr><td colspan='5' style='text-align:center;'>Belum ada rute aktif / Jadwal masih kosong.</td></tr>";
+                        echo "<tr><td colspan='5' style='text-align:center;'>Koneksi database belum tersedia. Silakan cek konfigurasi koneksi.</td></tr>";
                     }
                     ?>
                 </tbody>
@@ -102,7 +107,7 @@ include 'koneksi/koneksi.php';
     </div>
 
     <footer>
-        <p>&copy; 2026 Kelompok PO Trans Bus. | <small><a href="login.php">🔑 Login Admin Utama</a></small></p>
+        <p>&copy; 2026 PO Trans Bus. Pesan Tiket Bus Premium Aman dan Cepat | <small><a href="login.php">🔑 Login Admin</a></small></p>
     </footer>
 
 </body>
