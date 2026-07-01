@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 $host = "localhost"; // Ganti dengan MySQL Hostname hosting Anda
 $user = "root";            // Ganti dengan MySQL Username hosting Anda
 $pass = "";           // Ganti dengan password akun hosting Anda
-$db   = "db_tiket_bus";     // Ganti dengan Nama Database hosting Anda
+$db   = "websitebus2";     // Ganti dengan Nama Database hosting Anda
 
 $koneksi = mysqli_connect($host, $user, $pass, $db);
 if (!$koneksi) { 
