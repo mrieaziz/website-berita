@@ -1,3 +1,49 @@
+<?php
+// === PROSES LOGIKA DATABASE (TAMBAH, EDIT, HAPUS) ===
+
+// 1. Proses Tambah Data
+if (isset($_POST['simpan_berita'])) {
+    // Menggunakan mysqli_real_escape_string untuk mencegah error jika ada tanda kutip pada inputan
+    $judul   = mysqli_real_escape_string($koneksi, $_POST['judul']);
+    $isi     = mysqli_real_escape_string($koneksi, $_POST['isi']);
+    $tanggal = mysqli_real_escape_string($koneksi, $_POST['tanggal']);
+
+    $query_tambah = "INSERT INTO tabel_berita (judul, isi, tanggal) VALUES ('$judul', '$isi', '$tanggal')";
+    $simpan = mysqli_query($koneksi, $query_tambah) or die("Error Tambah: " . mysqli_error($koneksi));
+
+    if ($simpan) {
+        echo "<script>alert('Berita baru berhasil dipublikasikan!'); window.location='dashboard.php?menu=berita';</script>";
+    }
+}
+
+// 2. Proses Update/Edit Data
+if (isset($_POST['update_berita'])) {
+    $judul   = mysqli_real_escape_string($koneksi, $_POST['judul']);
+    $isi     = mysqli_real_escape_string($koneksi, $_POST['isi']);
+    $tanggal = mysqli_real_escape_string($koneksi, $_POST['tanggal']);
+
+    // Variabel $id diasumsikan sudah ditangkap dari URL di file dashboard.php
+    $query_update = "UPDATE tabel_berita SET judul='$judul', isi='$isi', tanggal='$tanggal' WHERE id_berita='$id'";
+    $update = mysqli_query($koneksi, $query_update) or die("Error Update: " . mysqli_error($koneksi));
+
+    if ($update) {
+        echo "<script>alert('Data berita berhasil diperbarui!'); window.location='dashboard.php?menu=berita';</script>";
+    }
+}
+
+// 3. Proses Hapus Data
+if ($aksi === 'hapus' && isset($_GET['id'])) {
+    $id_hapus = $_GET['id'];
+    $query_hapus = "DELETE FROM tabel_berita WHERE id_berita='$id_hapus'";
+    $hapus = mysqli_query($koneksi, $query_hapus) or die("Error Hapus: " . mysqli_error($koneksi));
+
+    if ($hapus) {
+        echo "<script>alert('Berita berhasil dihapus!'); window.location='dashboard.php?menu=berita';</script>";
+    }
+}
+// ====================================================
+?>
+
 <div class="admin-interface-wrapper">
     <div class="admin-page-header">
         <h2>✨ Kelola Info Berita Perusahaan</h2>
@@ -104,7 +150,6 @@
     } 
     ?>
 </div>
-
 <style>
     .admin-interface-wrapper {
         font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
