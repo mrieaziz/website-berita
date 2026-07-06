@@ -13,7 +13,7 @@ $user = "root";
 $pass = "";
 // Ganti nama database di bawah ini sesuai kesepakatan kelompokmu
 // Apakah "websitebus2" atau "db_tiket_bus" (harus sama persis dengan di phpMyAdmin)
-$db   = "db_tiket_bus"; 
+$db   = "website_berita1"; 
 
 $koneksi = mysqli_connect($host, $user, $pass, $db);
 
