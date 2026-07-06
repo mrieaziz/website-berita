@@ -64,7 +64,8 @@ $activePage = 'menu';
                 </table>
             </div>
         </section>
-        <section class="section-block">
+        
+        <section class="section-block" style="margin-top: 40px;">
             <h2>Tidak Menemukan Rute yang Dicari?</h2>
             <p>Hubungi kami untuk informasi lebih lanjut atau pesan custom route sesuai kebutuhan Anda.</p>
             <a href="index.php" class="btn btn-secondary">Hubungi Kami</a>
