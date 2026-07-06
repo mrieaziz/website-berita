@@ -8,7 +8,7 @@ $profile_pt = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM tabel_pro
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Perusahaan - PO Trans Bus</title>
+    <title>Profile Perusahaan - PO Sarana Ciledug</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', sans-serif; background-color: #f4f6f9; }
@@ -50,17 +50,17 @@ $profile_pt = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM tabel_pro
 <body>
 
     <header>
-        <div class="logo">PO Trans Bus</div>
+        <div class="logo">PO Sarana Ciledug</div>
         <nav>
-            <a href="index.php">🏠 Beranda</a>
-            <a href="menu.php">📋 Jadwal Rute</a>
-            <a href="testimoni.php">⭐ Ulasan</a>
-            <a href="berita.php">📰 Berita</a>
+            <a href="index.php"> Beranda</a>
+            <a href="menu.php"> Jadwal Rute</a>
+            <a href="testimoni.php"> Ulasan</a>
+            <a href="berita.php"> Berita</a>
             <?php if (isset($_SESSION['pelanggan_login'])) : ?>
-                <a href="profile.php">👤 Profil</a>
-                <a href="logout_user.php" style="color: #e74c3c;">🚪 Logout</a>
+                <a href="profile.php"> Tentang Kami</a>
+                <a href="logout_user.php" style="color: #e74c3c;"> Logout</a>
             <?php else : ?>
-                <a href="login_user.php">🔓 Login</a>
+                <a href="login_user.php"> Login</a>
                 <a href="register.php" style="background-color:#3498db; padding:5px 10px; border-radius:4px;">📝 Daftar</a>
             <?php endif; ?>
         </nav>
@@ -68,22 +68,22 @@ $profile_pt = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM tabel_pro
 
     <div class="container">
         <div class="page-header">
-            <h1>🏢 Tentang PO Trans Bus</h1>
+            <h1>🏢 Tentang PO Sarana Ciledug</h1>
             <p>Pelajari lebih lanjut tentang perusahaan kami dan visi misi kami</p>
         </div>
 
         <div class="about-card">
-            <h2>📋 Deskripsi Perusahaan</h2>
+            <h2> Deskripsi Perusahaan</h2>
             <p><?= nl2br(htmlspecialchars($profile_pt['deskripsi'] ?? '')) ?></p>
             
-            <h3>🎯 Visi</h3>
+            <h3> Visi</h3>
             <p>"<?= htmlspecialchars($profile_pt['visi'] ?? '') ?>"</p>
             
-            <h3>💼 Misi</h3>
+            <h3> Misi</h3>
             <p><?= nl2br(htmlspecialchars($profile_pt['misi'] ?? '')) ?></p>
         </div>
 
-        <h2 style="color: #1a252f; margin-bottom: 30px;">⭐ Ulasan Pelanggan Kami</h2>
+        <h2 style="color: #1a252f; margin-bottom: 30px;"> Ulasan Pelanggan Kami</h2>
         <div class="testimonials-grid">
             <?php 
             $query = mysqli_query($koneksi, "SELECT * FROM tabel_testimoni");
@@ -109,7 +109,7 @@ $profile_pt = mysqli_fetch_assoc(mysqli_query($koneksi, "SELECT * FROM tabel_pro
     </div>
 
     <footer>
-        <p>&copy; 2026 PO Trans Bus. | Terima kasih telah mempercayai kami untuk perjalanan Anda.</p>
+        <p>&copy; 2026 PO Sarana Ciledug. | Terima kasih telah mengunjungi situs kami.</p>
     </footer>
 
 </body>

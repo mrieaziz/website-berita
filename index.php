@@ -10,7 +10,7 @@ require_once __DIR__ . '/koneksi/koneksi.php';
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>PO Trans Bus - Beranda</title>
+    <title>PO Sarana Ciledug - Beranda</title>
     <link rel="stylesheet" href="css/style.css?v=20260701">
 </head>
 <body>
@@ -23,16 +23,16 @@ require_once __DIR__ . '/koneksi/koneksi.php';
             </span>
         </a>
         <nav class="top-nav">
-            <a href="index.php" class="active">🏠 Beranda</a>
-            <a href="menu.php">📋 Jadwal Rute</a>
-            <a href="testimoni.php">⭐ Ulasan</a>
-            <a href="berita.php">📰 Berita</a>
+            <a href="index.php" class="active"> Beranda</a>
+            <a href="menu.php"> Jadwal Rute</a>
+            <a href="testimoni.php"> Ulasan</a>
+            <a href="berita.php"> Berita</a>
             <?php if (isset($_SESSION['pelanggan_login'])) : ?>
-                <a href="profile.php">👤 Profil</a>
-                <a href="logout_user.php" class="nav-danger">🚪 Logout (<?php echo htmlspecialchars($_SESSION['nama_pelanggan'] ?? ''); ?>)</a>
+                <a href="profile.php"> Tentang Kami</a>
+                <a href="logout_user.php" class="nav-danger"> Logout (<?php echo htmlspecialchars($_SESSION['nama_pelanggan'] ?? ''); ?>)</a>
             <?php else : ?>
-                <a href="login_user.php">🔓 Login</a>
-                <a href="register.php" class="nav-cta">📝 Daftar</a>
+                <a href="login_user.php"> Login</a>
+                <a href="register.php" class="nav-cta"> Daftar</a>
             <?php endif; ?>
         </nav>
     </header>
@@ -44,7 +44,7 @@ require_once __DIR__ . '/koneksi/koneksi.php';
     <main class="page-main">
         <section class="hero-section">
             <div class="hero-content">
-                <span class="hero-badge">✨ Layanan tiket bus terpercaya</span>
+                <span class="hero-badge"> Layanan tiket bus terpercaya</span>
                 <h1>Pesan tiket bus favorit Anda dengan cepat, nyaman, dan aman.</h1>
                 <p>Jelajahi rute pilihan, pilih jadwal yang tepat, dan rasakan perjalanan yang lebih nyaman bersama PO Trans Bus.</p>
                 <div class="hero-actions">
@@ -59,10 +59,10 @@ require_once __DIR__ . '/koneksi/koneksi.php';
             <div class="hero-card">
                 <h3>Kenapa Memilih Kami?</h3>
                 <ul>
-                    <li>✅ Jadwal lengkap dan terupdate</li>
-                    <li>✅ Pemesanan mudah dan cepat</li>
-                    <li>✅ Bus bersih, aman, dan nyaman</li>
-                    <li>✅ Layanan pelanggan responsif</li>
+                    <li> Jadwal lengkap dan terupdate</li>
+                    <li> Pemesanan mudah dan cepat</li>
+                    <li> Bus bersih, aman, dan nyaman</li>
+                    <li> Layanan pelanggan responsif</li>
                 </ul>
             </div>
         </section>
@@ -73,7 +73,7 @@ require_once __DIR__ . '/koneksi/koneksi.php';
                 <span>Pemesanan mudah</span>
             </div>
             <div class="stat-card">
-                <strong>100+</strong>
+                <strong>10+</strong>
                 <span>Rute tersedia</span>
             </div>
             <div class="stat-card">
@@ -84,15 +84,15 @@ require_once __DIR__ . '/koneksi/koneksi.php';
 
         <section class="info-grid">
             <article class="info-card">
-                <h3>🎯 Fokus layanan</h3>
+                <h3> Fokus layanan</h3>
                 <p>Menyediakan pengalaman perjalanan bus yang praktis untuk kebutuhan harian maupun perjalanan jarak jauh.</p>
             </article>
             <article class="info-card">
-                <h3>🧭 Rute terlengkap</h3>
+                <h3> Rute terlengkap</h3>
                 <p>Beragam pilihan rute dengan jadwal yang jelas dan harga yang transparan untuk semua kebutuhan.</p>
             </article>
             <article class="info-card">
-                <h3>💬 Dukungan pelanggan</h3>
+                <h3> Dukungan pelanggan</h3>
                 <p>Tim kami siap membantu Anda dalam memilih jadwal terbaik dan menyelesaikan kebutuhan pemesanan.</p>
             </article>
         </section>
