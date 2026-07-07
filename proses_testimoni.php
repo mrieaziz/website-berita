@@ -22,8 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     
-    // Insert data ke database
-    $query = "INSERT INTO tabel_testimoni (nama_user, komentar, rating, tgl, status, foto, balasan_admin) VALUES ('$nama_user', '$komentar', $rating, '$tgl', '$status', '', NULL)";
+    // Insert data ke database (Diubah 'tgl' menjadi 'tanggal')
+// Insert data ke database (Hanya memasukkan 5 kolom yang sudah pasti ada)
+$query = "INSERT INTO tabel_testimoni (nama_user, komentar, rating, tgl, status) VALUES ('$nama_user', '$komentar', $rating, '$tgl', '$status')";
     
     if (mysqli_query($koneksi, $query)) {
         // Redirect ke halaman testimoni dengan status berhasil

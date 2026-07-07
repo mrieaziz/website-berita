@@ -34,6 +34,7 @@ $activePage = 'menu';
                             <th style="text-align: center;">No</th>
                             <th>Asal</th>
                             <th>Tujuan</th>
+                            <th>Armada Bus</th> <!-- Kolom Baru -->
                             <th>Waktu Keberangkatan</th>
                             <th>Harga Tiket</th>
                             <th style="text-align: center;">Aksi</th>
@@ -41,7 +42,14 @@ $activePage = 'menu';
                     </thead>
                     <tbody>
                         <?php
-                        $query = mysqli_query($koneksi, "SELECT * FROM tabel_rute ORDER BY asal ASC");
+                        // Query diubah menggunakan JOIN untuk mengambil data dari tabel_bus
+                        $query = mysqli_query($koneksi, "
+                            SELECT tabel_rute.*, tabel_bus.nama_bus, tabel_bus.kelas 
+                            FROM tabel_rute 
+                            LEFT JOIN tabel_bus ON tabel_rute.id_bus = tabel_bus.id_bus 
+                            ORDER BY tabel_rute.asal ASC
+                        ");
+
                         if ($query && mysqli_num_rows($query) > 0) {
                             $no = 1;
                             while ($row = mysqli_fetch_array($query)) {
@@ -49,7 +57,14 @@ $activePage = 'menu';
                                 echo "<td style='text-align: center;'><strong>#" . $no++ . "</strong></td>";
                                 echo "<td><strong>" . htmlspecialchars($row['asal'] ?? '') . "</strong></td>";
                                 echo "<td><strong>" . htmlspecialchars($row['tujuan'] ?? '') . "</strong></td>";
-                                echo "<td class='time'>" . htmlspecialchars($row['jam'] ? date('H:i', strtotime($row['jam'])) : '') . "</td>";
+                                
+                                // Menampilkan nama bus dan kelasnya
+                                $nama_armada = (isset($row['nama_bus']) && !empty($row['nama_bus'])) ? $row['nama_bus'] . ' (' . $row['kelas'] . ')' : '- Belum diatur -';
+                                echo "<td>" . htmlspecialchars($nama_armada) . "</td>";
+
+                                $waktu_berangkat = (isset($row['jam']) && !empty($row['jam'])) ? date('H:i', strtotime($row['jam'])) : '-';
+                                echo "<td class='time'>" . htmlspecialchars($waktu_berangkat) . "</td>";
+                                
                                 echo "<td class='price'>Rp " . number_format(($row['harga'] ?? 0), 0, ',', '.') . "</td>";
                                 if (isset($_SESSION['pelanggan_login'])) {
                                     echo "<td style='text-align: center;'><a href='order_tiket.php?id_rute=" . htmlspecialchars($row['id_rute'] ?? '') . "' class='action-btn'>🎫 Pesan</a></td>";
@@ -59,7 +74,7 @@ $activePage = 'menu';
                                 echo "</tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='6' class='empty-state'>Belum ada rute aktif. Jadwal masih kosong.</td></tr>";
+                            echo "<tr><td colspan='7' class='empty-state'>Belum ada rute aktif. Jadwal masih kosong.</td></tr>";
                         }
                         ?>
                     </tbody>

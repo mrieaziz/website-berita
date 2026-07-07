@@ -67,7 +67,7 @@ if (isset($_POST['buat_pesanan'])) {
 <body>
 
     <header>
-        <div class="logo">PO Trans Bus - Pemesanan</div>
+        <div class="logo">PO Sarana Ciledug - Pemesanan</div>
         <a href="index.php">← Kembali ke Beranda</a>
     </header>
 

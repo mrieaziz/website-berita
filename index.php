@@ -32,17 +32,14 @@ require_once __DIR__ . '/koneksi/koneksi.php';
         .hero-content,
         .hero-card {
             background: rgba(15, 23, 42, 0.75) !important;
-            /* Warna biru gelap transparan */
             padding: 35px !important;
             border-radius: 24px !important;
             backdrop-filter: blur(10px) !important;
             border: 1px solid rgba(255, 255, 255, 0.15) !important;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
             color: #ffffff !important;
-            /* Pastikan semua teks berwarna putih bersih */
         }
 
-        /* Memastikan judul dan teks tidak ada bayangan lama yang mengganggu */
         .hero-content h1,
         .hero-content p,
         .hero-card h3 {
@@ -51,16 +48,12 @@ require_once __DIR__ . '/koneksi/koneksi.php';
 
         /* Animasi 3 gambar bis */
         @keyframes heroBgSlideIndonesia {
-
-            0%,
-            100% {
+            0%, 100% {
                 background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus1.jpg');
             }
-
             33% {
                 background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus2.jpg');
             }
-
             66% {
                 background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus3.jpg');
             }
@@ -170,7 +163,7 @@ require_once __DIR__ . '/koneksi/koneksi.php';
                         <tr>
                             <th>Asal</th>
                             <th>Tujuan</th>
-                            <th>Keberangkatan</th>
+                            <th>Armada Bus</th> <th>Keberangkatan</th>
                             <th>Harga</th>
                             <th>Aksi</th>
                         </tr>
@@ -178,14 +171,27 @@ require_once __DIR__ . '/koneksi/koneksi.php';
                     <tbody>
                         <?php
                         if ($koneksi) {
-                            $query = mysqli_query($koneksi, "SELECT * FROM tabel_rute ORDER BY asal ASC");
+                            // Query diubah menggunakan JOIN persis seperti di menu.php
+                            $query = mysqli_query($koneksi, "
+                                SELECT tabel_rute.*, tabel_bus.nama_bus, tabel_bus.kelas 
+                                FROM tabel_rute 
+                                LEFT JOIN tabel_bus ON tabel_rute.id_bus = tabel_bus.id_bus 
+                                ORDER BY tabel_rute.asal ASC
+                            ");
 
                             if ($query && mysqli_num_rows($query) > 0) {
                                 while ($row = mysqli_fetch_assoc($query)) {
                                     echo "<tr>";
                                     echo "<td>" . htmlspecialchars($row['asal'] ?? '') . "</td>";
                                     echo "<td>" . htmlspecialchars($row['tujuan'] ?? '') . "</td>";
-                                    echo "<td class='time'>" . htmlspecialchars($row['jam'] ? date('H:i', strtotime($row['jam'])) : '') . "</td>";
+                                    
+                                    // Menampilkan data nama bus dan kelasnya
+                                    $nama_armada = (isset($row['nama_bus']) && !empty($row['nama_bus'])) ? $row['nama_bus'] . ' (' . $row['kelas'] . ')' : '- Belum diatur -';
+                                    echo "<td>" . htmlspecialchars($nama_armada) . "</td>";
+
+                                    $waktu_berangkat = (isset($row['jam']) && !empty($row['jam'])) ? date('H:i', strtotime($row['jam'])) : '-';
+                                    echo "<td class='time'>" . htmlspecialchars($waktu_berangkat) . "</td>";
+                                    
                                     echo "<td>Rp " . number_format(($row['harga'] ?? 0), 0, ',', '.') . "</td>";
 
                                     if (isset($_SESSION['pelanggan_login'])) {
@@ -197,10 +203,10 @@ require_once __DIR__ . '/koneksi/koneksi.php';
                                     echo "</tr>";
                                 }
                             } else {
-                                echo "<tr><td colspan='5' class='empty-state'>Belum ada rute aktif / Jadwal masih kosong.</td></tr>";
+                                echo "<tr><td colspan='6' class='empty-state'>Belum ada rute aktif / Jadwal masih kosong.</td></tr>";
                             }
                         } else {
-                            echo "<tr><td colspan='5' class='empty-state'>Koneksi database belum tersedia. Silakan cek konfigurasi koneksi.</td></tr>";
+                            echo "<tr><td colspan='6' class='empty-state'>Koneksi database belum tersedia. Silakan cek konfigurasi koneksi.</td></tr>";
                         }
                         ?>
                     </tbody>
