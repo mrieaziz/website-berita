@@ -4,6 +4,7 @@ require_once __DIR__ . '/koneksi/koneksi.php';
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,8 +13,8 @@ require_once __DIR__ . '/koneksi/koneksi.php';
     <meta http-equiv="Expires" content="0">
     <title>PO Sarana Ciledug - Beranda</title>
     <link rel="stylesheet" href="css/style.css?v=20260701">
-    
-   <style>
+
+    <style>
         /* 1. Background utama dengan overlay tipis agar bis tetap terang */
         .hero-section {
             background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus1.jpg');
@@ -30,17 +31,19 @@ require_once __DIR__ . '/koneksi/koneksi.php';
         /* 3. TRIK UTAMA: Memberikan efek "kaca gelap" ke KEDUA kotak (Kiri & Kanan) */
         .hero-content,
         .hero-card {
-            background: rgba(15, 23, 42, 0.75) !important; /* Warna biru gelap transparan */
+            background: rgba(15, 23, 42, 0.75) !important;
+            /* Warna biru gelap transparan */
             padding: 35px !important;
             border-radius: 24px !important;
             backdrop-filter: blur(10px) !important;
             border: 1px solid rgba(255, 255, 255, 0.15) !important;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
-            color: #ffffff !important; /* Pastikan semua teks berwarna putih bersih */
+            color: #ffffff !important;
+            /* Pastikan semua teks berwarna putih bersih */
         }
 
         /* Memastikan judul dan teks tidak ada bayangan lama yang mengganggu */
-        .hero-content h1, 
+        .hero-content h1,
         .hero-content p,
         .hero-card h3 {
             text-shadow: none !important;
@@ -48,18 +51,23 @@ require_once __DIR__ . '/koneksi/koneksi.php';
 
         /* Animasi 3 gambar bis */
         @keyframes heroBgSlideIndonesia {
-            0%, 100% {
+
+            0%,
+            100% {
                 background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus1.jpg');
             }
+
             33% {
                 background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus2.jpg');
             }
+
             66% {
                 background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus3.jpg');
             }
         }
     </style>
 </head>
+
 <body>
     <header class="site-header">
         <a href="index.php" class="brand">
@@ -74,18 +82,20 @@ require_once __DIR__ . '/koneksi/koneksi.php';
             <a href="menu.php"> Jadwal Rute</a>
             <a href="testimoni.php"> Ulasan</a>
             <a href="berita.php"> Berita</a>
-            <?php if (isset($_SESSION['pelanggan_login'])) : ?>
+            <?php if (isset($_SESSION['pelanggan_login'])): ?>
                 <a href="profile.php"> Tentang Kami</a>
-                <a href="logout_user.php" class="nav-danger"> Logout (<?php echo htmlspecialchars($_SESSION['nama_pelanggan'] ?? ''); ?>)</a>
-            <?php else : ?>
+                <a href="logout_user.php" class="nav-danger"> Logout
+                    (<?php echo htmlspecialchars($_SESSION['nama_pelanggan'] ?? ''); ?>)</a>
+            <?php else: ?>
                 <a href="login_user.php"> Login</a>
                 <a href="register.php" class="nav-cta"> Daftar</a>
             <?php endif; ?>
         </nav>
     </header>
 
-    <?php if (isset($_SESSION['pelanggan_login'])) : ?>
-        <div class="welcome-msg">Welcome Back, <b><?php echo htmlspecialchars($_SESSION['nama_pelanggan'] ?? ''); ?></b>! Kamu Bisa Memesan Tiket Nya Disini.</div>
+    <?php if (isset($_SESSION['pelanggan_login'])): ?>
+        <div class="welcome-msg">Welcome Back, <b><?php echo htmlspecialchars($_SESSION['nama_pelanggan'] ?? ''); ?></b>!
+            Kamu Bisa Memesan Tiket Nya Disini.</div>
     <?php endif; ?>
 
     <main class="page-main">
@@ -93,12 +103,13 @@ require_once __DIR__ . '/koneksi/koneksi.php';
             <div class="hero-content">
                 <span class="hero-badge"> Layanan tiket bus terpercaya</span>
                 <h1>Pesan tiket bus favorit Anda dengan cepat, nyaman, dan aman.</h1>
-                <p>Jelajahi rute pilihan, pilih jadwal yang tepat, dan rasakan perjalanan yang lebih nyaman bersama PO Trans Bus.</p>
+                <p>Jelajahi rute pilihan, pilih jadwal yang tepat, dan rasakan perjalanan yang lebih nyaman bersama PO
+                    Trans Bus.</p>
                 <div class="hero-actions">
                     <a href="menu.php" class="btn btn-primary">Lihat Jadwal</a>
-                    <?php if (isset($_SESSION['pelanggan_login'])) : ?>
+                    <?php if (isset($_SESSION['pelanggan_login'])): ?>
                         <a href="profile.php" class="btn btn-secondary">Lihat Profil</a>
-                    <?php else : ?>
+                    <?php else: ?>
                         <a href="register.php" class="btn btn-secondary">Buat Akun</a>
                     <?php endif; ?>
                 </div>
@@ -132,7 +143,8 @@ require_once __DIR__ . '/koneksi/koneksi.php';
         <section class="info-grid">
             <article class="info-card">
                 <h3> Fokus layanan</h3>
-                <p>Menyediakan pengalaman perjalanan bus yang praktis untuk kebutuhan harian maupun perjalanan jarak jauh.</p>
+                <p>Menyediakan pengalaman perjalanan bus yang praktis untuk kebutuhan harian maupun perjalanan jarak
+                    jauh.</p>
             </article>
             <article class="info-card">
                 <h3> Rute terlengkap</h3>
@@ -167,21 +179,21 @@ require_once __DIR__ . '/koneksi/koneksi.php';
                         <?php
                         if ($koneksi) {
                             $query = mysqli_query($koneksi, "SELECT * FROM tabel_rute ORDER BY asal ASC");
-                            
+
                             if ($query && mysqli_num_rows($query) > 0) {
                                 while ($row = mysqli_fetch_assoc($query)) {
                                     echo "<tr>";
                                     echo "<td>" . htmlspecialchars($row['asal'] ?? '') . "</td>";
                                     echo "<td>" . htmlspecialchars($row['tujuan'] ?? '') . "</td>";
-                                    echo "<td>" . htmlspecialchars($row['jam'] ?? '') . "</td>";
+                                    echo "<td class='time'>" . htmlspecialchars($row['jam'] ? date('H:i', strtotime($row['jam'])) : '') . "</td>";
                                     echo "<td>Rp " . number_format(($row['harga'] ?? 0), 0, ',', '.') . "</td>";
-                                    
+
                                     if (isset($_SESSION['pelanggan_login'])) {
                                         echo "<td><a href='order_tiket.php?id_rute=" . htmlspecialchars($row['id_rute'] ?? '') . "' class='btn-order'>Pesan Tiket</a></td>";
                                     } else {
                                         echo "<td><a href='login_user.php' class='btn-lock' title='Harus login terlebih dahulu'>🔒 Login untuk Pesan</a></td>";
                                     }
-                                    
+
                                     echo "</tr>";
                                 }
                             } else {
@@ -202,4 +214,5 @@ require_once __DIR__ . '/koneksi/koneksi.php';
         <p><a href="login.php"> Login Sebagai Admin</a></p>
     </footer>
 </body>
+
 </html>
