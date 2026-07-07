@@ -12,6 +12,53 @@ require_once __DIR__ . '/koneksi/koneksi.php';
     <meta http-equiv="Expires" content="0">
     <title>PO Sarana Ciledug - Beranda</title>
     <link rel="stylesheet" href="css/style.css?v=20260701">
+    
+   <style>
+        /* 1. Background utama dengan overlay tipis agar bis tetap terang */
+        .hero-section {
+            background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus1.jpg');
+            animation: heroBgSlideIndonesia 16s infinite ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* 2. Mematikan lapisan biru bawaan */
+        .hero-section::before {
+            display: none !important;
+        }
+
+        /* 3. TRIK UTAMA: Memberikan efek "kaca gelap" ke KEDUA kotak (Kiri & Kanan) */
+        .hero-content,
+        .hero-card {
+            background: rgba(15, 23, 42, 0.75) !important; /* Warna biru gelap transparan */
+            padding: 35px !important;
+            border-radius: 24px !important;
+            backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+            color: #ffffff !important; /* Pastikan semua teks berwarna putih bersih */
+        }
+
+        /* Memastikan judul dan teks tidak ada bayangan lama yang mengganggu */
+        .hero-content h1, 
+        .hero-content p,
+        .hero-card h3 {
+            text-shadow: none !important;
+        }
+
+        /* Animasi 3 gambar bis */
+        @keyframes heroBgSlideIndonesia {
+            0%, 100% {
+                background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus1.jpg');
+            }
+            33% {
+                background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus2.jpg');
+            }
+            66% {
+                background-image: linear-gradient(135deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('img/bus3.jpg');
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="site-header">
