@@ -5,12 +5,14 @@ $activePage = 'menu';
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jadwal Rute & Menu Perjalanan - PO Trans Bus</title>
     <link rel="stylesheet" href="css/style.css?v=20260701">
 </head>
+
 <body>
     <?php include 'komponen/header.php'; ?>
     <main class="page-main">
@@ -42,12 +44,12 @@ $activePage = 'menu';
                         $query = mysqli_query($koneksi, "SELECT * FROM tabel_rute ORDER BY asal ASC");
                         if ($query && mysqli_num_rows($query) > 0) {
                             $no = 1;
-                            while($row = mysqli_fetch_array($query)) {
+                            while ($row = mysqli_fetch_array($query)) {
                                 echo "<tr>";
                                 echo "<td style='text-align: center;'><strong>#" . $no++ . "</strong></td>";
                                 echo "<td><strong>" . htmlspecialchars($row['asal'] ?? '') . "</strong></td>";
                                 echo "<td><strong>" . htmlspecialchars($row['tujuan'] ?? '') . "</strong></td>";
-                                echo "<td class='time'>" . htmlspecialchars($row['jam'] ?? '') . "</td>";
+                                echo "<td class='time'>" . htmlspecialchars($row['jam'] ? date('H:i', strtotime($row['jam'])) : '') . "</td>";
                                 echo "<td class='price'>Rp " . number_format(($row['harga'] ?? 0), 0, ',', '.') . "</td>";
                                 if (isset($_SESSION['pelanggan_login'])) {
                                     echo "<td style='text-align: center;'><a href='order_tiket.php?id_rute=" . htmlspecialchars($row['id_rute'] ?? '') . "' class='action-btn'>🎫 Pesan</a></td>";
@@ -64,7 +66,7 @@ $activePage = 'menu';
                 </table>
             </div>
         </section>
-        
+
         <section class="section-block" style="margin-top: 40px;">
             <h2>Tidak Menemukan Rute yang Dicari?</h2>
             <p>Hubungi kami untuk informasi lebih lanjut atau pesan custom route sesuai kebutuhan Anda.</p>
@@ -73,4 +75,5 @@ $activePage = 'menu';
     </main>
     <?php include 'komponen/footer.php'; ?>
 </body>
+
 </html>
